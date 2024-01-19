@@ -1,0 +1,66 @@
+[project]
+name = "ars-pathfinder"
+version = "0.0.1"
+requires-python = ">=3.11"
+
+[tool.poetry]
+name = "ars-pathfinder"
+authors = ["Stanislav aka sbkubric Bogatskiy"]
+version = "0.0.1"
+readme = 'README.md'
+description = "A sample asyncio server for remote robot control via gRPC"
+repository = 'https://github.com/sbkubric/ars-pathfinder'
+packages = [
+  { include = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "*"
+pydantic-settings = "*"
+redis = "*"
+async-cache = "*"
+
+[tool.poetry.group.local]
+optional = true
+
+[tool.poetry.group.local.dependencies]
+flake8 = "*"
+flake8-isort = "*"
+black = "*"
+pre-commit = "*"
+pytest = "*"
+pytest-mock = "*"
+pytest-cov = "*"
+pytest-asyncio = "*"
+pytest-sugar = "*"
+fakeredis = "*"
+mypy = "*"
+pyright = "*"
+
+[tool.poetry.group.production]
+optional = true
+
+[tool.poetry.group.production.dependencies]
+sentry-sdk = "^1.10.1"
+
+[tool.black]
+target-version = ['py311']
+skip-string-normalization = true
+skip-magic-trailing-comma = true
+
+[tool.pyright]
+venv = '.venv'
+venvPath = '.'
+useLibraryCodeForTypes = true
+
+
+[tool.pytest.ini_options]
+asyncio_mode = 'strict'
+markers = [
+    "asyncio",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

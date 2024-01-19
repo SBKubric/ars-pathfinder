@@ -1,0 +1,21 @@
+version: "3.8"
+
+name: "pathfinder-local"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./compose/local/Dockerfile
+    image: pathfinder
+    stdin_open: true
+    command: "/start"
+    volumes:
+      - ./src:/app:z
+    env_file:
+      - ./.envs/.local/.app
+    ports:
+      - 50
+
+  redis:
+    image: redis:7

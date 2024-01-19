@@ -1,0 +1,31 @@
+syntax = "proto3";
+message Empty {}
+service PathFinder {
+rpc SetField (Field) returns (Empty); // Setting initial state
+rpc Moving (stream MoveRequest) returns (stream MoveResponse); // Moving process
+}
+// Matrix coords
+message Point {
+int32 i = 1; // vertical coordinate
+int32 j = 2; // horizontal coordinate
+}
+message Field {
+int32 N = 1; // height
+int32 M = 2; // width
+string grid = 3; // string representation of matrix (0 = free, 1 = obstacle)
+Point source = 4; // starting point
+}
+message MoveRequest {
+repeated Point targets = 2; // list of target points
+}
+enum Motion {
+ERROR = 0;
+RIGHT = 1;
+DOWN = 2;
+LEFT = 3;
+UP = 4;
+FINISH = 5;
+}
+message MoveResponse {
+Motion direction = 1; // direction of the next move
+}
