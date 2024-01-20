@@ -1,8 +1,10 @@
+import typing as t
+
 import numpy as np
 import pytest
 from numpy.typing import NDArray
 
-from pathfinder.a_star import Mode, distance, search
+from pathfinder.a_star import Mode, distance, heuristic, search
 
 TEST_CASES = [
     {
@@ -138,10 +140,30 @@ TEST_CASES = [
         },
         "output": [(1, 0), (2, 0), (3, 0), (4, 0)],
     },
+    {
+        "name": "Euclidean heuristic",
+        "input": {
+            "maze": [[0, 1, 0], [0, 0, 0], [0, 1, 0]],
+            "start": (0, 0),
+            "goals": [(2, 2)],
+            "mode": Mode.EUCLIDEAN,
+        },
+        "output": [(1, 0), (1, 1), (1, 2), (2, 2)],
+    },
+    {
+        "name": "Multiple goals",
+        "input": {
+            "maze": [[0, 1, 0], [0, 0, 0], [0, 1, 0]],
+            "start": (0, 0),
+            "goals": [(2, 2), (1, 1)],
+            "mode": Mode.MANHATTAN,
+        },
+        "output": [(1, 0), (1, 1)],
+    },
 ]
 
 PARAMETRIZE_ARGS = (
-    "case_name,maze,start,goal,output,mode",
+    "case_name,maze,start,goals,output,mode",
     [
         (
             case["name"],
@@ -161,11 +183,11 @@ def test_a_star(
     case_name: str,
     maze: NDArray,
     start: tuple[int, int],
-    goal: tuple[int, int],
+    goals: list[tuple[int, int]],
     output: list[tuple[int, int]],
     mode: Mode,
 ):
-    result = search(maze, start, goal)
+    result = search(maze, start, goals, mode)
     print(result)
     assert result == output
 
@@ -184,8 +206,17 @@ def test_diagonal_mode():
 
 def test_invalid_mode():
     with pytest.raises(ValueError):
-        distance((0, 0), (3, 4), 'INVALID')  # type: ignore
+        distance((0, 0), (3, 4), t.cast(Mode, 'INVALID'))  # type: ignore
 
 
 def test_negative_coordinates():
     assert distance((-3, -4), (3, 4)) == 14
+
+
+def test_heuristic():
+    assert heuristic((0, 0), [(1, 1), (2, 2)], Mode.MANHATTAN) == 2
+    assert heuristic((0, 0), [(1, 1), (2, 2)], Mode.EUCLIDEAN) == 1.4142135623730951
+    assert heuristic((0, 0), [(1, 1), (2, 2)], Mode.DIAGONAL) == 1
+
+    with pytest.raises(ValueError):
+        heuristic((0, 0), [(1, 1), (2, 2)], t.cast(Mode, 'INVALID'))

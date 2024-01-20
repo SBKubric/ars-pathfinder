@@ -88,17 +88,16 @@ def search(
     neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]
     close_set = set()
     open_set = []
-    goals_to_traverse = goals.copy()
 
     gscore = {start: 0}
-    fscore = {start: heuristic(start, goals_to_traverse, mode)}
+    fscore = {start: heuristic(start, goals, mode)}
     heapq.heappush(open_set, (fscore[start], start))
 
     came_from = {}
     while len(open_set) > 0:
         current = heapq.heappop(open_set)[1]
 
-        if current in goals_to_traverse:
+        if current in goals:
             data = []
             while current in came_from:
                 data.append(current)
@@ -132,9 +131,7 @@ def search(
             ]:
                 came_from[neighbor] = current
                 gscore[neighbor] = tentative_g_score
-                fscore[neighbor] = tentative_g_score + heuristic(
-                    neighbor, goals_to_traverse, mode
-                )
+                fscore[neighbor] = tentative_g_score + heuristic(neighbor, goals, mode)
                 heapq.heappush(open_set, (fscore[neighbor], neighbor))
 
     return None
