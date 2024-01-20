@@ -20,6 +20,7 @@ pydantic = "*"
 pydantic-settings = "*"
 redis = "*"
 async-cache = "*"
+numpy = "^1.26.3"
 
 [tool.poetry.group.local]
 optional = true
