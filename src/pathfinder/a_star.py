@@ -95,6 +95,7 @@ def search(
 
     gscore = {start: 0}
     fscore = {start: heuristic(start, goals, mode)}
+    # binary heap is faster than list on insert while keeping the order
     heapq.heappush(open_set, (fscore[start], start))
 
     came_from: dict[tuple[int, int], tuple[int, int]] = {}
@@ -127,7 +128,7 @@ def search(
                 continue
 
             if neighbor in close_set and tentative_g_score >= gscore.get(neighbor, 0):
-                # discard the neighbor which is already in close_set
+                # discard the neighbor which has been already visited
                 continue
 
             if tentative_g_score < gscore.get(neighbor, 0) or neighbor not in [
