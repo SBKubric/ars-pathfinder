@@ -91,13 +91,13 @@ def search(
 
     neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]
     close_set = set()
-    open_set = []
+    open_set: list = []
 
     gscore = {start: 0}
     fscore = {start: heuristic(start, goals, mode)}
     heapq.heappush(open_set, (fscore[start], start))
 
-    came_from = {}
+    came_from: dict[tuple[int, int], tuple[int, int]] = {}
     while len(open_set) > 0:
         current = heapq.heappop(open_set)[1]
 

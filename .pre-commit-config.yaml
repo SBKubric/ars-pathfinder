@@ -40,6 +40,13 @@ repos:
     rev: "8cd2d4056637e242709fe09f15a36f0b4b682bda"
     hooks:
       - id: mypy
+        additional_dependencies:
+          [
+            numpy>=1.26.3,
+            mypy-protobuf>=3.5.0,
+            grpc-stubs>=1.53.0.5,
+            watchfiles>=0.21.0,
+          ]
 
 ci:
   autoupdate_schedule: weekly

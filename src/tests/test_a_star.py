@@ -166,12 +166,12 @@ PARAMETRIZE_ARGS = (
     "case_name,maze,start,goals,output,mode",
     [
         (
-            case["name"],
-            np.array(case["input"]["maze"], int),
-            case["input"]["start"],
-            case["input"]["goals"],
-            case["output"],
-            case["input"]["mode"],
+            case["name"],  # type: ignore
+            np.array(case["input"]["maze"], int),  # type: ignore
+            case["input"]["start"],  # type: ignore
+            case["input"]["goals"],  # type: ignore
+            case["output"],  # type: ignore
+            case["input"]["mode"],  # type: ignore
         )
         for case in TEST_CASES
     ],
