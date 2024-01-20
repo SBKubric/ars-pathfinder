@@ -21,6 +21,8 @@ pydantic-settings = "*"
 redis = "*"
 async-cache = "*"
 numpy = "^1.26.3"
+grpclib = "^0.4.7"
+betterproto = {extras = ["compiler"], version = "^1.2.5"}
 
 [tool.poetry.group.local]
 optional = true
