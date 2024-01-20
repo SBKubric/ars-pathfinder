@@ -1,8 +1,10 @@
 import enum
 import heapq
-from functools import lru_cache
+from functools import cache
 
 from numpy.typing import NDArray
+
+from pathfinder.abstract import AlgorithmProtocol
 
 
 class Mode(str, enum.Enum):
@@ -20,8 +22,8 @@ class Mode(str, enum.Enum):
     DIAGONAL = "diagonal"
 
 
-@lru_cache(maxsize=None)
-def distance(a: tuple[int, int], b: tuple[int, int], mode: Mode = Mode.MANHATTAN):
+@cache
+def distance(a: tuple[int, int], b: tuple[int, int], mode: str = Mode.MANHATTAN):
     """
     Calculate the heuristic distance between a and b according to the specified mode.
 
@@ -48,7 +50,7 @@ def distance(a: tuple[int, int], b: tuple[int, int], mode: Mode = Mode.MANHATTAN
 
 
 def heuristic(
-    point: tuple[int, int], goals: list[tuple[int, int]], mode: Mode = Mode.MANHATTAN
+    point: tuple[int, int], goals: list[tuple[int, int]], mode: str = Mode.MANHATTAN
 ):
     """
     Calculate the heuristic distance between point and the nearest goal according to the specified mode.
@@ -72,7 +74,7 @@ def search(
     maze: NDArray,
     start: tuple[int, int],
     goals: list[tuple[int, int]],
-    mode: Mode = Mode.MANHATTAN,
+    mode: str = Mode.MANHATTAN,
 ) -> list[tuple[int, int]] | None:
     """
     Implement the A* search algorithm.
@@ -137,3 +139,15 @@ def search(
                 heapq.heappush(open_set, (fscore[neighbor], neighbor))
 
     return None
+
+
+class AStar(AlgorithmProtocol):
+    @classmethod
+    def search(
+        cls,
+        maze: NDArray,
+        start: tuple[int, int],
+        goals: list[tuple[int, int]],
+        mode: str = Mode.MANHATTAN,
+    ) -> list[tuple[int, int]] | None:
+        return search(maze, start, goals, mode)
