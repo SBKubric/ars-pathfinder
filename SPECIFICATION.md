@@ -76,12 +76,13 @@ The server responds with `MoveResponse(direction=Motion.DOWN)`, indicating that 
 This is considered one iteration.
 
 State after first iteration:
-| :---- |:---:| :-----:|:---:|
-| |🪨| |🪨|
-| | |🪨| |
-|🪨| | | |
-| |🪨| | |
-| | | | |
+
+|     | 🪨  |     | 🪨  |
+| :-: | :-: | :-: | :-: |
+|     |     | 🪨  |     |
+| 🪨  |     |     |     |
+|     | 🪨  |     |     |
+|     |     |     |     |
 
 After this, the client sends the same request again because the robot hasn't reached any of the targets yet.
 The server then responds with `MoveResponse(direction=Motion.RIGHT)`, indicating that the robot should move to the right.
