@@ -1,5 +1,6 @@
 import enum
 import heapq
+from functools import lru_cache
 
 from numpy.typing import NDArray
 
@@ -19,6 +20,7 @@ class Mode(str, enum.Enum):
     DIAGONAL = "diagonal"
 
 
+@lru_cache(maxsize=None)
 def distance(a: tuple[int, int], b: tuple[int, int], mode: Mode = Mode.MANHATTAN):
     """
     Calculate the heuristic distance between a and b according to the specified mode.
