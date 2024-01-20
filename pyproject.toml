@@ -43,6 +43,8 @@ grpcio = "^1.60.0"
 grpcio-tools = "^1.60.0"
 types-protobuf = "^4.24.0.20240106"
 watchfiles = "^0.21.0"
+mypy-protobuf = "^3.5.0"
+grpc-stubs = "^1.53.0.5"
 
 [tool.poetry.group.production]
 optional = true
