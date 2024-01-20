@@ -5,12 +5,36 @@ from numpy.typing import NDArray
 
 
 class Mode(str, enum.Enum):
+    """
+    Enum class for specifying the type of heuristic to be used in the A* search algorithm.
+
+    Attributes:
+        MANHATTAN: Use the Manhattan distance as the heuristic.
+        EUCLIDEAN: Use the Euclidean distance as the heuristic.
+        DIAGONAL: Use the maximum absolute difference between the coordinates as the heuristic.
+    """
+
     MANHATTAN = "manhattan"
     EUCLIDEAN = "euclidean"
     DIAGONAL = "diagonal"
 
 
 def heuristic(a: tuple[int, int], b: tuple[int, int], mode: Mode = Mode.MANHATTAN):
+    """
+    Calculate the heuristic value of the second point from the first point according to the specified mode.
+
+    Args:
+        a (tuple[int, int]): The first point.
+        b (tuple[int, int]): The second point.
+        mode (Mode, optional): The type of heuristic to be used. Defaults to Mode.MANHATTAN.
+
+    Returns:
+        float: The heuristic value.
+
+    Raises:
+        ValueError: If the mode is invalid.
+    """
+
     if mode == Mode.MANHATTAN:
         return abs(b[0] - a[0]) + abs(b[1] - a[1])
     elif mode == Mode.EUCLIDEAN:
@@ -27,6 +51,18 @@ def a_star_search(
     goal: tuple[int, int],
     mode: Mode = Mode.MANHATTAN,
 ) -> list[tuple[int, int]] | None:
+    """
+    Implement the A* search algorithm.
+
+    Args:
+        maze (numpy.NDArray): The maze represented as a 2D array.
+        start (tuple[int, int]): The start point.
+        goal (tuple[int, int]): The goal point.
+        mode (Mode, optional): The type of heuristic to be used. Defaults to Mode.MANHATTAN ("manhattan").
+
+    Returns:
+        list[tuple[int, int]] | None: A list of tuples representing the path from the start point to the goal point, or None if no path exists.
+    """
     neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]
     close_set = set()
     open_set = []
