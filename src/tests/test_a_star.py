@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from numpy.typing import NDArray
 
-from pathfinder.a_star import Mode, a_star_search, heuristic
+from pathfinder.a_star import Mode, distance, search
 
 TEST_CASES = [
     {
@@ -10,7 +10,7 @@ TEST_CASES = [
         "input": {
             "maze": [[0] * 5 for _ in range(5)],
             "start": (0, 0),
-            "goal": (4, 4),
+            "goals": [(4, 4)],
             "mode": Mode.MANHATTAN,
         },
         "output": [(1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)],
@@ -26,7 +26,7 @@ TEST_CASES = [
                 [0, 0, 0, 0, 0],
             ],
             "start": (0, 0),
-            "goal": (4, 4),
+            "goals": [(4, 4)],
             "mode": Mode.MANHATTAN,
         },
         "output": [(1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)],
@@ -42,7 +42,7 @@ TEST_CASES = [
                 [0, 0, 0, 0, 0],
             ],
             "start": (0, 0),
-            "goal": (4, 4),
+            "goals": [(4, 4)],
             "mode": Mode.MANHATTAN,
         },
         "output": [(1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)],
@@ -58,7 +58,7 @@ TEST_CASES = [
                 [0, 0, 0, 0, 0],
             ],
             "start": (0, 0),
-            "goal": (0, 0),
+            "goals": [(0, 0)],
             "mode": Mode.MANHATTAN,
         },
         "output": [],
@@ -74,7 +74,7 @@ TEST_CASES = [
                 [0, 0, 1, 0, 0],
             ],
             "start": (0, 0),
-            "goal": (4, 4),
+            "goals": [(4, 4)],
             "mode": Mode.MANHATTAN,
         },
         "output": None,
@@ -90,7 +90,7 @@ TEST_CASES = [
                 [0, 0, 0, 0, 0],
             ],
             "start": (0, 0),
-            "goal": (4, 4),
+            "goals": [(4, 4)],
             "mode": Mode.MANHATTAN,
         },
         "output": [(1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4)],
@@ -106,7 +106,7 @@ TEST_CASES = [
                 [0, 0, 0, 0, 0],
             ],
             "start": (0, 0),
-            "goal": (0, 4),
+            "goals": [(0, 4)],
             "mode": Mode.MANHATTAN,
         },
         "output": [
@@ -133,7 +133,7 @@ TEST_CASES = [
                 [0, 0, 0, 0, 0],
             ],
             "start": (0, 0),
-            "goal": (4, 0),
+            "goals": [(4, 0)],
             "mode": Mode.MANHATTAN,
         },
         "output": [(1, 0), (2, 0), (3, 0), (4, 0)],
@@ -147,7 +147,7 @@ PARAMETRIZE_ARGS = (
             case["name"],
             np.array(case["input"]["maze"], int),
             case["input"]["start"],
-            case["input"]["goal"],
+            case["input"]["goals"],
             case["output"],
             case["input"]["mode"],
         )
@@ -165,27 +165,27 @@ def test_a_star(
     output: list[tuple[int, int]],
     mode: Mode,
 ):
-    result = a_star_search(maze, start, goal)
+    result = search(maze, start, goal)
     print(result)
     assert result == output
 
 
 def test_manhattan_mode():
-    assert heuristic((0, 0), (3, 4)) == 7
+    assert distance((0, 0), (3, 4)) == 7
 
 
 def test_euclidean_mode():
-    assert heuristic((0, 0), (3, 4), Mode.EUCLIDEAN) == pytest.approx(5)
+    assert distance((0, 0), (3, 4), Mode.EUCLIDEAN) == pytest.approx(5)
 
 
 def test_diagonal_mode():
-    assert heuristic((0, 0), (3, 4), Mode.DIAGONAL) == 4
+    assert distance((0, 0), (3, 4), Mode.DIAGONAL) == 4
 
 
 def test_invalid_mode():
     with pytest.raises(ValueError):
-        heuristic((0, 0), (3, 4), 'INVALID')  # type: ignore
+        distance((0, 0), (3, 4), 'INVALID')  # type: ignore
 
 
 def test_negative_coordinates():
-    assert heuristic((-3, -4), (3, 4)) == 14
+    assert distance((-3, -4), (3, 4)) == 14

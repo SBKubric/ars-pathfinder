@@ -19,9 +19,9 @@ class Mode(str, enum.Enum):
     DIAGONAL = "diagonal"
 
 
-def heuristic(a: tuple[int, int], b: tuple[int, int], mode: Mode = Mode.MANHATTAN):
+def distance(a: tuple[int, int], b: tuple[int, int], mode: Mode = Mode.MANHATTAN):
     """
-    Calculate the heuristic value of the second point from the first point according to the specified mode.
+    Calculate the heuristic distance between a and b according to the specified mode.
 
     Args:
         a (tuple[int, int]): The first point.
@@ -29,7 +29,7 @@ def heuristic(a: tuple[int, int], b: tuple[int, int], mode: Mode = Mode.MANHATTA
         mode (Mode, optional): The type of heuristic to be used. Defaults to Mode.MANHATTAN.
 
     Returns:
-        float: The heuristic value.
+        float: The heuristic distance.
 
     Raises:
         ValueError: If the mode is invalid.
@@ -45,10 +45,31 @@ def heuristic(a: tuple[int, int], b: tuple[int, int], mode: Mode = Mode.MANHATTA
         raise ValueError("Invalid mode")
 
 
-def a_star_search(
+def heuristic(
+    point: tuple[int, int], goals: list[tuple[int, int]], mode: Mode = Mode.MANHATTAN
+):
+    """
+    Calculate the heuristic distance between point and the nearest goal according to the specified mode.
+
+    Args:
+        point (tuple[int, int]): The from point.
+        goals (list[tuple[int, int]]): The list of goals.
+        mode (Mode, optional): The type of heuristic to be used. Defaults to Mode.MANHATTAN.
+
+    Returns:
+        float: The distance to the nearest goal.
+
+    Raises:
+        ValueError: If the mode is invalid.
+    """
+
+    return min(distance(point, goal, mode) for goal in goals)
+
+
+def search(
     maze: NDArray,
     start: tuple[int, int],
-    goal: tuple[int, int],
+    goals: list[tuple[int, int]],
     mode: Mode = Mode.MANHATTAN,
 ) -> list[tuple[int, int]] | None:
     """
@@ -57,25 +78,27 @@ def a_star_search(
     Args:
         maze (numpy.NDArray): The maze represented as a 2D array.
         start (tuple[int, int]): The start point.
-        goal (tuple[int, int]): The goal point.
+        goals (list[tuple[int, int]]): The goal points.
         mode (Mode, optional): The type of heuristic to be used. Defaults to Mode.MANHATTAN ("manhattan").
 
     Returns:
         list[tuple[int, int]] | None: A list of tuples representing the path from the start point to the goal point, or None if no path exists.
     """
+
     neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]
     close_set = set()
     open_set = []
+    goals_to_traverse = goals.copy()
 
     gscore = {start: 0}
-    fscore = {start: heuristic(start, goal, mode)}
+    fscore = {start: heuristic(start, goals_to_traverse, mode)}
     heapq.heappush(open_set, (fscore[start], start))
 
     came_from = {}
     while len(open_set) > 0:
         current = heapq.heappop(open_set)[1]
 
-        if current == goal:
+        if current in goals_to_traverse:
             data = []
             while current in came_from:
                 data.append(current)
@@ -86,7 +109,7 @@ def a_star_search(
         close_set.add(current)
         for i, j in neighbors:
             neighbor = current[0] + i, current[1] + j
-            tentative_g_score = gscore[current] + heuristic(current, neighbor, mode)
+            tentative_g_score = gscore[current] + distance(current, neighbor, mode)
 
             if 0 <= neighbor[0] < maze.shape[0]:
                 if 0 <= neighbor[1] < maze.shape[1]:
@@ -109,6 +132,9 @@ def a_star_search(
             ]:
                 came_from[neighbor] = current
                 gscore[neighbor] = tentative_g_score
-                fscore[neighbor] = tentative_g_score + heuristic(neighbor, goal, mode)
+                fscore[neighbor] = tentative_g_score + heuristic(
+                    neighbor, goals_to_traverse, mode
+                )
                 heapq.heappush(open_set, (fscore[neighbor], neighbor))
+
     return None
