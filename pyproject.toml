@@ -22,7 +22,6 @@ redis = "*"
 async-cache = "*"
 numpy = "^1.26.3"
 grpclib = "^0.4.7"
-betterproto = {extras = ["compiler"], version = "^1.2.5"}
 
 [tool.poetry.group.local]
 optional = true
@@ -40,6 +39,10 @@ pytest-sugar = "*"
 fakeredis = "*"
 mypy = "*"
 pyright = "*"
+grpcio = "^1.60.0"
+grpcio-tools = "^1.60.0"
+types-protobuf = "^4.24.0.20240106"
+watchfiles = "^0.21.0"
 
 [tool.poetry.group.production]
 optional = true
@@ -63,6 +66,9 @@ asyncio_mode = 'strict'
 markers = [
     "asyncio",
 ]
+
+[tool.mypy]
+plugins = "numpy.typing.mypy_plugin"
 
 [build-system]
 requires = ["poetry-core"]
