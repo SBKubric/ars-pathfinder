@@ -64,12 +64,12 @@ Coordinates start from the top left corner, moving downwards corresponds to incr
 
 So, the staring position looks like this:
 
-| :---- |:---:| :-----:|:---:|
-| |🪨| |🪨|
-| | |🪨| |
-|🪨| | | |
-| |🪨| | |
-| | | | |
+| 🤖  | 🪨  |     | 🪨  |
+| :-: | :-: | :-: | :-: |
+|     |     | 🪨  |     |
+| 🪨  |     |     |     |
+|     | 🪨  |     |     |
+| 🪨  |     |     |     |
 
 Next, the client opens a stream to Moving and sends a MoveRequest with three target points.
 The server responds with `MoveResponse(direction=Motion.DOWN)`, indicating that the robot should move downwards.
@@ -79,16 +79,30 @@ State after first iteration:
 
 |     | 🪨  |     | 🪨  |
 | :-: | :-: | :-: | :-: |
-|     |     | 🪨  |     |
-| 🪨  |     |     |     |
+| 🤖  |     | 🪨  |     |
+| 🪨  |     |     | ⛳  |
 |     | 🪨  |     |     |
-|     |     |     |     |
+| 🪨  | ⛳  |     | ⛳  |
 
 After this, the client sends the same request again because the robot hasn't reached any of the targets yet.
 The server then responds with `MoveResponse(direction=Motion.RIGHT)`, indicating that the robot should move to the right.
 
-Assuming the server decided to reach the point `(2, 3)` first, when the robot is at `(2, 2)`, the server responds with RIGHT and the layout changes accordingly.
+Assuming the server decided to reach the point `(2, 3)` first, when the robot is at `(2, 2)`, the server responds with RIGHT and the layout changes accordingly:
+
+|     | 🪨  |     | 🪨  |
+| :-: | :-: | :-: | :-: |
+|     |     | 🪨  |     |
+| 🪨  |     |     | 🤖  |
+|     | 🪨  |     |     |
+| 🪨  | ⛳  |     | ⛳  |
 
 Then, during the next request to the server, the message will be without the point `(2, 3)`: `MoveRequest(targets=[Point(i=4, j=1), Point(i=4, j=3)])`. Suppose the server responded with `DOWN`. At this moment, a new target appears for the robot at `(1, 1)`. The new request to the server will be: `MoveRequest(targets=[Point(i=4, j=1), Point(i=4, j=3), Point(i=1, j=1)])`.
 
 The view at this iteration would look like this:
+
+|     | 🪨  |     | 🪨  |
+| :-: | :-: | :-: | :-: |
+|     | ⛳  | 🪨  |     |
+| 🪨  |     |     |     |
+|     | 🪨  |     | 🤖  |
+| 🪨  | ⛳  |     | ⛳  |
