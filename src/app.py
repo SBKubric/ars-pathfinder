@@ -1,6 +1,7 @@
 import concurrent.futures as cf
 import logging
 
+from grpclib.reflection.service import ServerReflection
 from grpclib.server import Server
 from grpclib.utils import graceful_exit
 
@@ -17,7 +18,8 @@ async def start_pathfinder():
     with cf.ProcessPoolExecutor(max_workers=settings.pool_size) as executor:
         async with RedisConnector() as connection:
             state = get_state(connection)
-            server = Server([Pathfinder(executor, state)])
+            services = ServerReflection.extend([Pathfinder(executor, state)])
+            server = Server(services)
             with graceful_exit([server]):
                 await server.start(settings.host, settings.port)
                 logging.debug(

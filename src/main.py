@@ -5,20 +5,18 @@ from app import start_pathfinder
 from core.config import settings
 
 
-async def callback(changes):
+def callback(changes):
     logging.debug('changes detected', changes)
 
 
-async def main():
-    if settings.debug:
-        from watchfiles import arun_process
-
-        await arun_process(
-            '.', target=start_pathfinder, callback=callback  # type: ignore
-        )
-    else:
-        await start_pathfinder()
+def main():
+    asyncio.run(start_pathfinder())
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    if settings.debug:
+        from watchfiles import run_process
+
+        run_process('.', target=main, callback=callback)
+    else:
+        main()
