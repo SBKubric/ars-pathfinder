@@ -100,7 +100,7 @@ jobs:
 
       - name: Set tag to output
         id: vars
-        run: echo "tag=${GITHUB_REF#release/*/}" >> $GITHUB_OUTPUT
+        run: echo "tag=${GITHUB_REF#ghcr.io/sbkubric/ars-pathfinder:refs/tags/*/}" >> $GITHUB_OUTPUT
 
       - name: Build proto files
         run: |
