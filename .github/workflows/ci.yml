@@ -13,7 +13,7 @@ on:
   push:
     branches: ["master", "main"]
     paths-ignore: ["docs/**"]
-  
+
   release:
     types: [published]
 
@@ -89,9 +89,26 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.TOKEN }}
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements/base.txt
+            requirements/local.txt
+
       - name: Set tag to output
         id: vars
-        run: echo "tag=${GITHUB_REF#releases/*/}" >> $GITHUB_OUTPUT
+        run: echo "tag=${GITHUB_REF#release/*/}" >> $GITHUB_OUTPUT
+
+      - name: Build proto files
+        run: |
+          python3.11 -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements/local.txt
+          mkdir src/server/lib
+          python -m grpc_tools.protoc -I . --python_out=./src/server/lib/ --grpc_python_out=./src/server/lib/ ./pathfinder.proto --mypy_out=./src/server/lib/ --grpclib_python_out=./src/server/lib/
 
       - name: Build Docker image
         uses: docker/build-push-action@v4
