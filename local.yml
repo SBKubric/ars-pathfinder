@@ -17,5 +17,20 @@ services:
     ports:
       - 50051:50051
 
+  monitor:
+    build:
+      context: .
+      dockerfile: ./compose/monitoring/Dockerfile
+    image: monitor
+    stdin_open: true
+    env_file:
+      - ./.envs/.local/.app
+
+    ports:
+      - 50052:8501
+
+    profiles:
+      - "mon"
+
   redis:
     image: redis:7

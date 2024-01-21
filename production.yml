@@ -2,17 +2,17 @@ version: "3.8"
 
 name: "pathfinder"
 volumes:
-  - redis-data: {}
+  redis-data: {}
 
 services:
   app:
-    image: ghcr.io/sbkubric/ars-pathfinder:latest
+    image: ghcr.io/sbkubric/ars-pathfinder:v0.0.1
     restart: always
     env_file:
       - ./.envs/.production/.app
     command: /start
-  ports:
-    - 50051:50051
+    ports:
+      - 50051:50051
 
   redis:
     image: redis:7
