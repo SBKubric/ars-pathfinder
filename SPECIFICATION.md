@@ -46,6 +46,8 @@ Possible alues of `ALGO` are:
 
 Other implementations could be added by implementing `AlgorithmProtocol` and adding new class to `AlgoManager`.
 
+TODO: Add Hub Labeling algorithm
+
 The [proto file](./pathfinder.proto) specifies the structure of the messages and services that are used in the communication between the client and server.
 It includes definitions for `Empty`, `PathFinder`, `Point`, `Field`, `MoveRequest`, `Motion`, and `MoveResponse`.
 

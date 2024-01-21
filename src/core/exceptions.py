@@ -1,0 +1,2 @@
+class PathfinderError(Exception):
+    pass

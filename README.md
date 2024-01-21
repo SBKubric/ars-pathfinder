@@ -46,6 +46,7 @@ You have now the gRPC server listening on port 50051.
 -   redis
 -   grpcio
 -   grpcio-tools
+-   black, flake8, isort (idea: switch to [ruff](), as black [can clash](https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#flake8) with flake8)
 
 ## Implementation
 

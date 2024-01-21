@@ -13,7 +13,9 @@ async def main():
     if settings.debug:
         from watchfiles import arun_process
 
-        await arun_process('.', target=start_pathfinder, callback=callback)
+        await arun_process(
+            '.', target=start_pathfinder, callback=callback  # type: ignore
+        )
     else:
         await start_pathfinder()
 

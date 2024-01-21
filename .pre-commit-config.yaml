@@ -46,6 +46,7 @@ repos:
             mypy-protobuf>=3.5.0,
             grpc-stubs>=1.53.0.5,
             watchfiles>=0.21.0,
+            redis>=5.0.1,
           ]
 
 ci:

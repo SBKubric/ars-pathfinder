@@ -18,7 +18,7 @@ cprod:
 
 #grpc generation
 protoc:
-	python -m grpc_tools.protoc -I . --python_out=./src/lib/ --grpc_python_out=./src/lib/ ./pathfinder.proto --mypy_out=./src/lib/
+	python -m grpc_tools.protoc -I . --python_out=./src/server/lib/ --grpc_python_out=./src/server/lib/ ./pathfinder.proto --mypy_out=./src/server/lib/ --grpclib_python_out=./src/server/lib/
 
 #build docker image for local development. Need cdev to be run first
 local:

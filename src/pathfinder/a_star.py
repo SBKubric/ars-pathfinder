@@ -22,6 +22,7 @@ class Mode(str, enum.Enum):
     DIAGONAL = "diagonal"
 
 
+# TODO: implement shared cache between processes(via redis)
 @cache
 def distance(a: tuple[int, int], b: tuple[int, int], mode: str = Mode.MANHATTAN):
     """
@@ -143,12 +144,10 @@ def search(
 
 
 class AStar(AlgorithmProtocol):
-    @classmethod
+    def __init__(self, mode: str = Mode.MANHATTAN):
+        self.mode = mode
+
     def search(
-        cls,
-        maze: NDArray,
-        start: tuple[int, int],
-        goals: list[tuple[int, int]],
-        mode: str = Mode.MANHATTAN,
+        self, maze: NDArray, start: tuple[int, int], goals: list[tuple[int, int]]
     ) -> list[tuple[int, int]] | None:
-        return search(maze, start, goals, mode)
+        return search(maze, start, goals, self.mode)
