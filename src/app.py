@@ -21,7 +21,8 @@ async def start_pathfinder():
             services = ServerReflection.extend([Pathfinder(executor, state)])
             server = Server(services)
             with graceful_exit([server]):
-                await server.start(settings.host, settings.port)
+                await server.start(port=settings.port)
                 logging.debug(
                     f"Server started. Listening on host {settings.host} and port {settings.port}"
                 )
+                await server.wait_closed()

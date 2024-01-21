@@ -41,11 +41,13 @@ class Pathfinder(PathFinderBase):
         if request is None:
             logging.error("No field provided")
             raise GRPCError(Status.INVALID_ARGUMENT, 'No Field for SetField provided')
-
+        logging.debug(f"SetField request: {request}")
         try:
             result = await field_state.set_field(self._state, request)
+            logging.debug(f"SetField answered: {result}")
             await stream.send_message(result)
         except PathfinderError as e:
+            logging.error('Houston, we have a problem!')
             logging.error(e)
             return
 
@@ -64,10 +66,13 @@ class Pathfinder(PathFinderBase):
             logging.error("No MoveRequest provided")
             raise GRPCError(Status.INVALID_ARGUMENT, 'No MoveRequest provided')
 
+        logging.debug(f"Moving request: {request}")
         try:
             result = await field_state.moving(self._state, self._executor, request)
             await stream.send_message(result)
+            logging.debug(f"Moving answered: {result}")
         except PathfinderError as e:
+            logging.error('Houston, we have a problem!')
             logging.error(e)
             response = grpc_models.MoveResponse()
             response.direction = Direction.ERROR  # type: ignore
