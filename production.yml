@@ -6,7 +6,7 @@ volumes:
 
 services:
   app:
-    image: ghcr.io/sbkubric/ars-pathfinder:v0.0.1
+    image: ghcr.io/sbkubric/ars-pathfinder:v0.0.2
     restart: always
     env_file:
       - ./.envs/.production/.app
