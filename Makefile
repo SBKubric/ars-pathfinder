@@ -16,6 +16,9 @@ idev:
 cprod:
 	bash ./compose/production/export-requirements.sh
 
+cmon:
+	bash ./compose/monitoring/export-requirements.sh
+
 #grpc generation
 protoc:
 	python -m grpc_tools.protoc -I . --python_out=./src/server/lib/ --grpc_python_out=./src/server/lib/ ./pathfinder.proto --mypy_out=./src/server/lib/ --grpclib_python_out=./src/server/lib/
@@ -23,3 +26,9 @@ protoc:
 #build docker image for local development. Need cdev to be run first
 local:
 	docker compose -f local.yml up -d
+
+mon:
+	docker compose -f local.yml --profile mon up -d
+
+prod:
+	docker compose -f production.yml up -d

@@ -39,6 +39,16 @@ poetry run python src/main.py
 
 You have now the gRPC server listening on port 50051.
 
+### Install from registry
+
+Prerequisites: `docker, python3, make`
+
+Just run after installing prerequisites:
+
+```bash
+make prod
+```
+
 ## Stack
 
 -   python3.11
