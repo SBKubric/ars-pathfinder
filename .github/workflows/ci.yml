@@ -98,10 +98,6 @@ jobs:
             requirements/base.txt
             requirements/local.txt
 
-      - name: Set tag to output
-        id: vars
-        run: echo "tag=${GITHUB_REF#ghcr.io/sbkubric/ars-pathfinder:refs/tags/*/}" >> $GITHUB_OUTPUT
-
       - name: Build proto files
         run: |
           python3.11 -m venv .venv
@@ -117,7 +113,7 @@ jobs:
           push: ${{ github.event_name == 'release' }}
           tags: |
             ghcr.io/sbkubric/ars-pathfinder:latest
-            ghcr.io/sbkubric/ars-pathfinder:${{ steps.vars.outputs.tag }}
+            ghcr.io/sbkubric/ars-pathfinder:${{ github.ref_name }}
 
           labels: |
             maintainer=${{ github.actor }}
