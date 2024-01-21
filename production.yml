@@ -11,6 +11,8 @@ services:
     env_file:
       - ./.envs/.production/.app
     command: /start
+  ports:
+    - 50051:50051
 
   redis:
     image: redis:7
