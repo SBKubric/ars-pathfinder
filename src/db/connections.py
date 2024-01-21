@@ -22,7 +22,7 @@ class RedisConnector:
             PathfinderError: If the connection to the Redis database fails.
         """
         self._connection_to_await = Redis.from_url(
-            settings.redis_url, backoff=default_backoff()
+            settings.redis_url, retry_on_timeout=True, socket_connect_timeout=10
         )
         self._connection: Redis | None = None
 
