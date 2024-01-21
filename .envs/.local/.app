@@ -4,4 +4,6 @@ REDIS_HOST="redis"
 REDIS_PORT=6379
 CACHE_TTL=60
 LOG_LEVEL="DEBUG"
+ALGO="astar[manhattan]"
+POOL_SIZE=1
 DEBUG=true
