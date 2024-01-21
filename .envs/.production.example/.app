@@ -5,5 +5,5 @@ REDIS_PORT=6379
 CACHE_TTL=60
 LOG_LEVEL="WARNING"
 ALGO="astar[manhattan]"
-POOL_SIZE=5
+POOL_SIZE=1
 SENTRY_DSN="https://<key>@sentry.io/<project>"
