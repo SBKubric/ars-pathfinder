@@ -65,6 +65,8 @@ jobs:
           python3.11 -m venv .venv
           source .venv/bin/activate
           pip install -r requirements/local.txt
+          mkdir src/server/lib
+          python -m grpc_tools.protoc -I . --python_out=./src/server/lib/ --grpc_python_out=./src/server/lib/ ./pathfinder.proto --mypy_out=./src/server/lib/ --grpclib_python_out=./src/server/lib/
           pytest .
 
   builder:
